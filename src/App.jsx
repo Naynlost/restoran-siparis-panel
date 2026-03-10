@@ -8,7 +8,7 @@ function App() {
   const [menuItems, setMenuItems] = useState([]);
   const [cart, setCart] = useState([]);
 
-  // Modallar ve Bildirim State'leri
+  // Model ve bildirim state'leri
   const [showAddModal, setShowAddModal] = useState(false);
   const [newItemName, setNewItemName] = useState('');
   const [newItemPrice, setNewItemPrice] = useState('');
@@ -17,11 +17,11 @@ function App() {
   const [editingItem, setEditingItem] = useState(null);
   const [editPrice, setEditPrice] = useState('');
 
-  // Sipariş Onay Modalı State'i
+  // Sipariş onay 
   const [showCheckoutModal, setShowCheckoutModal] = useState(false);
   const [checkoutMessage, setCheckoutMessage] = useState('');
 
-  // 1. Verileri Çekme
+  // Verileri Firebase'den çekme
   const fetchMenu = async () => {
     const querySnapshot = await getDocs(collection(db, "menu"));
     const items = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -32,7 +32,7 @@ function App() {
     fetchMenu();
   }, []);
 
-  // 2. Ürün Ekleme
+  // Ürün Ekleme
   const handleAddProduct = async (e) => {
     e.preventDefault();
     if (!newItemName || !newItemPrice) return;
@@ -43,7 +43,7 @@ function App() {
     fetchMenu(); 
   };
 
-  // 3. Ürün Silme (Onaylı)
+  // Ürün Silme
   const handleDeleteProduct = async (id) => {
     const isConfirmed = window.confirm("Bu ürünü silmek istediğinize emin misiniz?");
     if (isConfirmed) {
@@ -52,7 +52,7 @@ function App() {
     }
   };
 
-  // 4. Fiyat Güncelleme
+  // Fiyat Güncelleme
   const openPriceModal = (item) => {
     setEditingItem(item);
     setEditPrice(item.price);
@@ -68,7 +68,7 @@ function App() {
     }
   };
 
-  // --- Sepet Fonksiyonları ---
+  // Sepete Ekleme ve Çıkarma
   const addToCart = (item) => {
     const existingItem = cart.find(c => c.id === item.id);
     if (existingItem) {
@@ -198,7 +198,7 @@ function App() {
         </Row>
       </Container>
 
-      {/* Ürün Ekleme Modalı */}
+      {/* Ürün Ekleme */}
       <Modal show={showAddModal} onHide={() => setShowAddModal(false)} centered>
         <Modal.Header closeButton>
           <Modal.Title>Yeni Ürün Ekle</Modal.Title>
@@ -218,7 +218,7 @@ function App() {
         </Modal.Body>
       </Modal>
 
-      {/* Fiyat Güncelleme Modalı */}
+      {/* Fiyat Güncelleme */}
       <Modal show={showPriceModal} onHide={() => setShowPriceModal(false)} centered>
         <Modal.Header closeButton>
           <Modal.Title>Fiyatı Güncelle: {editingItem?.name}</Modal.Title>
@@ -234,7 +234,7 @@ function App() {
         </Modal.Body>
       </Modal>
 
-      {/* Sipariş Onay Modalı */}
+      {/* Sipariş Onay */}
       <Modal show={showCheckoutModal} onHide={() => setShowCheckoutModal(false)} centered>
         <Modal.Header closeButton>
           <Modal.Title>Siparişi Onayla</Modal.Title>
